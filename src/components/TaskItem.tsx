@@ -30,7 +30,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     <div className="p-4 border border-gray-200 rounded-lg shadow-md bg-white mb-4">
       <h3 className="text-lg font-semibold">{task.title}</h3>
       <p className="text-sm text-gray-600">{task.description}</p>
-      <p className="text-sm text-gray-500">Due: {new Date(task.due_date).toLocaleDateString()}</p>
+      <p className="text-sm text-blue-500">Due: {new Date(task.due_date).toLocaleDateString()}</p>
+      <p className="text-sm text-gray-500 mt-1">Assignee: {task.assignee.full_name}</p>
       {
         task.status === 'done' ?
         <p className={`mt-2 text-sm font-semibold text-green-600`}>Done</p> : 
@@ -52,7 +53,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         >
           Delete
         </button>
-        {task.status !== 'Done' && (
+        {task.status !== 'done' && (
           <button
             onClick={() => MarkAsDone(task._id)}
             className="inline-flex text-sm justify-center items-center py-1 px-2 border border-transparent rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

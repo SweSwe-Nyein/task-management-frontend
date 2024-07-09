@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../../services/authService';
-import { authError, LoginBody, LoginResponse, LogoutResponse, RegisterBody, RegisterResponse } from '../../types/auth';
+import { authError, LoginBody, LoginResponse, LogoutResponse, RegisterBody, RegisterResponse, User } from '../../types/auth';
 
 export const fetchLogin = createAsyncThunk<
   LoginResponse,
@@ -79,6 +79,28 @@ void,
 async (_, thunkAPI) => {
   try {
     const res = await authService.getProfile();
+    return res;
+  } catch (err: any) {
+    return thunkAPI.rejectWithValue({
+      status: err.response.status,
+      message: err.response.data.message,
+      errors: err.response.data.errors,
+    });
+  }
+}
+);
+
+export const fetchUserList = createAsyncThunk<
+User[],
+void,
+{
+  rejectValue: authError;
+}
+>(
+'auth/fetchUserList',
+async (_, thunkAPI) => {
+  try {
+    const res = await authService.getUserList();
     return res;
   } catch (err: any) {
     return thunkAPI.rejectWithValue({

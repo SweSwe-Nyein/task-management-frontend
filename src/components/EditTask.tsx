@@ -14,11 +14,13 @@ interface DialogBoxProps {
 const EditTask: React.FC<DialogBoxProps> = ({ id, onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
   const {taskErrors, success, taskDetail} = useSelector((state: RootState) => state.task)
+  const {userList} = useSelector((state: RootState) => state.auth)
   
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
+      assignee: "",
       status: "",
       due_date: "",
     },
@@ -39,6 +41,7 @@ const EditTask: React.FC<DialogBoxProps> = ({ id, onClose }) => {
       formik.setValues({
         title: taskDetail.title,
         description: taskDetail.description,
+        assignee: taskDetail.assignee._id,
         status: taskDetail.status,
         due_date: formatDate(taskDetail.due_date),
       })
@@ -84,6 +87,25 @@ const EditTask: React.FC<DialogBoxProps> = ({ id, onClose }) => {
               />
               {formik.touched.description && formik.errors.description ? (
                 <div className="text-red-600 text-xs mt-1">{formik.errors.description}</div>
+              ) : null}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="assignee" className="block text-sm font-medium text-gray-700 mb-1">Assignee</label>
+              <select
+                className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded bg-white"
+                name="assignee"
+                value={formik.values.assignee}
+                onChange={formik.handleChange}
+              >
+                <option value="" disabled>Select an Assignee</option>
+                {
+                  userList.map(user => (
+                    <option key={user._id} value={user._id}>{user.full_name}</option>
+                  ))
+                }
+              </select>
+              {formik.touched.assignee && formik.errors.assignee ? (
+                <div className="text-red-600 text-xs mt-1">{formik.errors.assignee}</div>
               ) : null}
             </div>
             <div className="mb-3">

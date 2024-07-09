@@ -2,6 +2,7 @@ export type authState = {
   loading: boolean;
   authErrors: authError | undefined;
   isAuthenticated: boolean;
+  userList: User[];
 }
 
 export type LoginBody = {
@@ -36,4 +37,13 @@ export type authError = {
 
 export type LogoutResponse = {
   message: string;
+}
+
+export type User = {
+  _id: string;
+  full_name: string;
+  email: string;
+  role: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

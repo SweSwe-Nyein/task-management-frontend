@@ -12,11 +12,13 @@ interface DialogBoxProps {
 const CreateTask: React.FC<DialogBoxProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
   const {taskErrors, success} = useSelector((state: RootState) => state.task)
+  const {userList} = useSelector((state: RootState) => state.auth)
   
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
+      assignee: "",
       status: "todo",
       due_date: "",
     },
@@ -71,13 +73,31 @@ const CreateTask: React.FC<DialogBoxProps> = ({ onClose }) => {
               ) : null}
             </div>
             <div className="mb-3">
+              <label htmlFor="assignee" className="block text-sm font-medium text-gray-700 mb-1">Assignee</label>
+              <select
+                className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded bg-white"
+                name="assignee"
+                value={formik.values.assignee}
+                onChange={formik.handleChange}
+              >
+                <option value="" disabled>Select an Assignee</option>
+                {
+                  userList.map(user => (
+                    <option key={user._id} value={user._id}>{user.full_name}</option>
+                  ))
+                }
+              </select>
+              {formik.touched.assignee && formik.errors.assignee ? (
+                <div className="text-red-600 text-xs mt-1">{formik.errors.assignee}</div>
+              ) : null}
+            </div>
+            <div className="mb-3">
               <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
               <select
                 className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded bg-white"
                 name="status"
                 value={formik.values.status}
                 onChange={formik.handleChange}
-                required
               >
                 <option value="todo">To Do</option>
                 <option value="in_progress">In Progress</option>

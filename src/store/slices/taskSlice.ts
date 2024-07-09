@@ -84,6 +84,7 @@ const taskSlice = createSlice({
       .addCase(fetchEditTask.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
+        state.taskDetail = {} as Task;
       })
       .addCase(fetchEditTask.rejected, (state, action) => {
         state.loading = false;

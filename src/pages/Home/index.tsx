@@ -4,12 +4,14 @@ import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchCounts } from "../../store/thunks/taskThunk";
+import { fetchUserList } from "../../store/thunks/authThunk";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {counts, success} = useSelector((state: RootState) => state.task)
   useEffect(() => {
     dispatch(fetchCounts());
+    dispatch(fetchUserList());
   }, [success])
   return (
     <div>

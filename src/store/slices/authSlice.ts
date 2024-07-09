@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { authState } from "../../types/auth"
-import { fetchLogin, fetchLogout, fetchProfile, fetchRegister } from "../thunks/authThunk"
+import { fetchLogin, fetchLogout, fetchProfile, fetchRegister, fetchUserList } from "../thunks/authThunk"
 
 const initialState: authState = {
   loading: false,
   authErrors: undefined,
   isAuthenticated: true,
+  userList: [],
 }
 
 const authSlice = createSlice({
@@ -75,6 +76,17 @@ const authSlice = createSlice({
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
+      })
+      // fetchUserList
+      .addCase(fetchUserList.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userList = action.payload;
+      })
+      .addCase(fetchUserList.rejected, (state, action) => {
+        state.loading = false;
       })
   }
 })

@@ -25,9 +25,16 @@ const getProfile = async () => {
     .then(response => response.data);
 }
 
+const getUserList = async () => {
+  return api
+    .get('/users')
+    .then(response => response.data);
+}
+
 export default {
   login,
   regsiter,
   logout,
   getProfile,
+  getUserList,
 }
